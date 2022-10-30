@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Videoer</string>
+    <string name="folders">Folders</string>
+    <string name="videos">Videos</string>
+</resources>
