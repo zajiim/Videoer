@@ -11,4 +11,5 @@
     <string name="sort_order">Sort Order</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
+    <string name="nav_header_title">Welcome to Videoer</string>
 </resources>
