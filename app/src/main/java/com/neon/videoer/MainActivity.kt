@@ -115,35 +115,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//    private fun getAllVideos(): ArrayList<Video> {
-//        val tempList = ArrayList<Video>()
-//        val projection = arrayOf(MediaStore.Video.Media.TITLE, MediaStore.Video.Media.SIZE, MediaStore.Video.Media._ID, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media.DATA, MediaStore.Video.Media.DATE_ADDED, MediaStore.Video.Media.DURATION)
-//        val cursor = this.contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null,  MediaStore.Video.Media.DATE_ADDED + " DESC")
-//        if(cursor != null)
-//            if(cursor.moveToNext())
-//                do {
-//                    val titleC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE))
-//                    val idC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID))
-//                    val folderC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME))
-//                    val sizeC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE))
-//                    val pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA))
-//                    val durationC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION)).toLong()
-//
-//                    try {
-//                        val file = File(pathC)
-//                        val artUriC = Uri.fromFile(file)
-//                        val video = Video(title= titleC, id = idC, folderName = folderC, size = sizeC, path = pathC, duration = durationC, artUri = artUriC)
-//                        if(file.exists()) tempList.add(video)
-//                    } catch (e:java.lang.Exception) {
-//
-//                    }
-//
-//                } while (cursor.moveToNext())
-//
-//
-//        cursor?.close()
-//        return tempList
-//    }
+
 
 
     @SuppressLint("Range")
@@ -168,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                     val folderC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME))
                     val sizeC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE))
                     val pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA))
-//                    val durationC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION)).toLong()
+                    val durationC = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION))
 
                     try {
                         val file = File(pathC)
@@ -176,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                         val video = Video(title = titleC,
                             id = idC,
                             folderName = folderC,
-//                            duration = durationC,
+                            duration = durationC,
                             size = sizeC,
                             path = pathC,
                             artUri = artUriC)
@@ -189,6 +161,10 @@ class MainActivity : AppCompatActivity() {
         cursor?.close()
         return tempList
     }
+
+
+
+
 
 
 }

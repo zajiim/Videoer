@@ -18,7 +18,7 @@ class VideoAdapter(private val context: Context, private var videoList: ArrayLis
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
         holder.title.text = videoList[position].title
         holder.folder.text = videoList[position].folderName
-//        holder.duration.text = DateUtils.formatElapsedTime(videoList[position].duration / 1000)
+        holder.duration.text = DateUtils.formatElapsedTime((videoList[position].duration).toLong() / 1000)
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +31,7 @@ class VideoAdapter(private val context: Context, private var videoList: ArrayLis
     class MyHolder(binding: VideoViewBinding): RecyclerView.ViewHolder(binding.root) {
         val title = binding.videoName
         val folder = binding.folderName
-//        val duration = binding.duration
+        val duration = binding.duration
 
     }
 }
