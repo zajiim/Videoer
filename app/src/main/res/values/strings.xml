@@ -12,4 +12,8 @@
     <string name="exit">Exit</string>
     <string name="about">About</string>
     <string name="nav_header_title">Welcome to Videoer</string>
+    <string name="video_name">Video name</string>
+    <string name="folder_name">Folder name</string>
+    <string name="duration">00:00</string>
+    <string name="image">Image</string>
 </resources>
