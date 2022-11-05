@@ -98,6 +98,9 @@ class MainActivity : AppCompatActivity() {
         if(requestCode == 7) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                foldersList = ArrayList()
+                videoList = getAllVideos()
+                setFragment(VideosFragment())
 
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE),7)
