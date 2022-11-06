@@ -2,16 +2,16 @@ package com.neon.videoer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore.Video
+
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+
 import com.neon.videoer.databinding.ActivityPlayerBinding
 
 class PlayerActivity : AppCompatActivity() {
-    lateinit var binding: ActivityPlayerBinding
+    private lateinit var binding: ActivityPlayerBinding
     companion object {
-        lateinit var player: ExoPlayer
+         lateinit var player: ExoPlayer
         lateinit var playerList: ArrayList<com.neon.videoer.models.Video>
         var position: Int = -1
     }
@@ -21,6 +21,7 @@ class PlayerActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         initializeLayout()
+        initializeBinding()
     }
 
     private fun initializeLayout() {
@@ -28,22 +29,49 @@ class PlayerActivity : AppCompatActivity() {
             "AllVideos" -> {
                 playerList = ArrayList()
                 playerList.addAll(MainActivity.videoList)
+                createPlayer()
             }
             "FolderActivity" -> {
                 playerList = ArrayList()
                 playerList.addAll(FoldersActivity.currentFolderVideos)
+                createPlayer()
             }
         }
-        createPlayer()
+
     }
 
+    private fun initializeBinding() {
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
+        binding.playPauseBtn.setOnClickListener {
+            if(player.isPlaying) pauseVideo()
+            else playVideo()
+        }
+    }
+
+
+
+
+
     private fun createPlayer() {
+        binding.videoTitle.text = playerList[position].title
+        binding.videoTitle.isSelected = true
         player = ExoPlayer.Builder(this).build()
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(playerList[position].artUri)
         player.setMediaItem(mediaItem)
         player.prepare()
+        playVideo()
+    }
+
+    private fun playVideo() {
+        binding.playPauseBtn.setImageResource(R.drawable.pause_icon)
         player.play()
+    }
+    private fun pauseVideo() {
+        binding.playPauseBtn.setImageResource(R.drawable.play_icon)
+        player.pause()
     }
 
     override fun onDestroy() {

@@ -16,4 +16,15 @@
     <string name="folder_name">Folder name</string>
     <string name="duration">00:00</string>
     <string name="image">Image</string>
+    <string name="loading">loading..</string>
+    <string name="semi_colon">:</string>
+    <string name="lock_icon">Lock</string>
+    <string name="back_button">Back Button</string>
+    <string name="menu_icon">Menu</string>
+    <string name="repeat_icon">Repeat</string>
+    <string name="next_icon">Next</string>
+    <string name="previous_icon">Previous</string>
+    <string name="fullscreen_icon">FullScreen</string>
+    <string name="play_button">Play</string>
+
 </resources>
