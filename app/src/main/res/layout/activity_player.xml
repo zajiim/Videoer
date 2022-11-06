@@ -101,6 +101,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/prevBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/previous_icon"
@@ -124,6 +125,7 @@
                 android:padding="10dp"/>
 
             <ImageView
+                android:id="@+id/nextBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/next_icon"

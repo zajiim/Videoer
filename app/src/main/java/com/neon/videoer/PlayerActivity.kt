@@ -48,6 +48,12 @@ class PlayerActivity : AppCompatActivity() {
             if(player.isPlaying) pauseVideo()
             else playVideo()
         }
+        binding.nextBtn.setOnClickListener {
+            nextPrevVideo()
+        }
+        binding.prevBtn.setOnClickListener {
+            nextPrevVideo(isNext = false)
+        }
     }
 
 
@@ -72,6 +78,30 @@ class PlayerActivity : AppCompatActivity() {
     private fun pauseVideo() {
         binding.playPauseBtn.setImageResource(R.drawable.play_icon)
         player.pause()
+    }
+
+    private fun nextPrevVideo(isNext: Boolean = true) {
+        if(isNext) setPosition()
+        else setPosition(isIncrement = false)
+        createPlayer()
+
+    }
+
+    private fun setPosition(isIncrement: Boolean = true) {
+        if(isIncrement) {
+            if(playerList.size - 1 == position) {
+                position = 0
+            } else {
+                ++position
+            }
+        } else {
+            if(position == 0) {
+                position = playerList.size - 1
+            } else {
+                --position
+            }
+        }
+
     }
 
     override fun onDestroy() {
