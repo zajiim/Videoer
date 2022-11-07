@@ -1,8 +1,12 @@
 package com.neon.videoer
 
+import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
@@ -20,12 +24,15 @@ import com.neon.videoer.databinding.ActivityPlayerBinding
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
+    private lateinit var runnable: Runnable
+
     companion object {
          lateinit var player: ExoPlayer
         lateinit var playerList: ArrayList<com.neon.videoer.models.Video>
         var position: Int = -1
         private var repeat: Boolean = false
         private var isFullScreen: Boolean = false
+        private var isLocked: Boolean = false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +113,20 @@ class PlayerActivity : AppCompatActivity() {
                 playInFullscreen(true)
             }
         }
+
+        binding.lockBtn.setOnClickListener {
+            if(!isLocked) {
+                isLocked = true
+                binding.playerView.hideController()
+                binding.playerView.useController = false
+                binding.lockBtn.setImageResource(R.drawable.lock_close_icon)
+            } else {
+                isLocked = false
+                binding.playerView.useController = true
+                binding.playerView.showController()
+                binding.lockBtn.setImageResource(R.drawable.lock_open_icon)
+            }
+        }
     }
 
 
@@ -132,6 +153,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
         playInFullscreen(isFullScreen)
+        setVisibility()
     }
 
     private fun playVideo() {
@@ -179,6 +201,23 @@ class PlayerActivity : AppCompatActivity() {
             player.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
             binding.fullScreenBtn.setImageResource(R.drawable.fullscreen_icon)
         }
+    }
+
+    private fun setVisibility() {
+        runnable = Runnable {
+            if(binding.playerView.isControllerVisible) changeVisibility(View.VISIBLE)
+            else changeVisibility(View.INVISIBLE)
+            Handler(Looper.getMainLooper()).postDelayed(runnable, 300)
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 0)
+    }
+
+    private fun changeVisibility(visibility: Int) {
+        binding.topController.visibility = visibility
+        binding.bottomController.visibility = visibility
+        if(isLocked) binding.lockBtn.visibility = View.VISIBLE
+        else binding.lockBtn.visibility = visibility
+
     }
 
 
