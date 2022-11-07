@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayerActivity">
+    tools:context=".PlayerActivity"
+    android:background="@color/black">
 
 
     <com.google.android.exoplayer2.ui.PlayerView
@@ -74,23 +75,25 @@
     <LinearLayout
         android:id="@+id/bottomController"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="horizontal"
         android:background="#42000000"
-        android:gravity="center">
+        android:gravity="center"
+        android:paddingTop="20dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/repeatBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/repeat_icon"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/repeat_icon"
             app:tint="@color/white"
             android:padding="10dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginLeft="50dp"/>
 
 
 
@@ -102,8 +105,8 @@
 
             <ImageView
                 android:id="@+id/prevBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/previous_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/previous_icon"
@@ -113,8 +116,8 @@
 
             <ImageView
                 android:id="@+id/playPauseBtn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@drawable/play_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/play_button"
@@ -122,12 +125,14 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?android:selectableItemBackground"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:layout_marginHorizontal="20dp"
+                />
 
             <ImageView
                 android:id="@+id/nextBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/next_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/next_icon"
@@ -137,13 +142,14 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/fullScreenBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/fullscreen_icon"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/fullscreen_icon"
             app:tint="@color/white"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="50dp"
             android:padding="10dp"/>
 
     </LinearLayout>
