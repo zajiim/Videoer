@@ -1,7 +1,4 @@
 package com.neon.videoer
-
-
-
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -20,6 +18,7 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -27,18 +26,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.neon.videoer.databinding.ActivityPlayerBinding
 import com.neon.videoer.databinding.MoreFeaturesBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var runnable: Runnable
+    private var isSubtitle: Boolean = true
 
     companion object {
-         lateinit var player: ExoPlayer
+        lateinit var player: ExoPlayer
         lateinit var playerList: ArrayList<com.neon.videoer.models.Video>
         var position: Int = -1
         private var repeat: Boolean = false
         private var isFullScreen: Boolean = false
         private var isLocked: Boolean = false
+        lateinit var trackSelector: DefaultTrackSelector
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,13 +151,46 @@ class PlayerActivity : AppCompatActivity() {
 
             bindingMF.audioTrackBtn.setOnClickListener {
                 dialog.dismiss()
+                playVideo()
+                val audioTrack = ArrayList<String>()
+                for(i in 0 until player.currentTrackGroups.length) {
+                    if(player.currentTrackGroups.get(i).getFormat(0).selectionFlags == C.SELECTION_FLAG_DEFAULT) {
+                        audioTrack.add(Locale(player.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
+                    }
+                }
+                val tempTracks = audioTrack.toArray(arrayOfNulls<CharSequence>(audioTrack.size))
                 MaterialAlertDialogBuilder(this, R.style.alertDialog)
                     .setTitle("Select Audio Track")
                     .setOnCancelListener {
                         playVideo()
                     }
-                    .setBackground(ColorDrawable(0x00090809)).create().show()
+                    .setBackground(ColorDrawable(0x00090809))
+                    .setItems(tempTracks){_, position ->
+                        Toast.makeText(this, audioTrack[position] + " Selected", Toast.LENGTH_SHORT).show()
+                        trackSelector.setParameters(trackSelector.buildUponParameters().setPreferredAudioLanguage(audioTrack[position]))
 
+                    }
+                    .create()
+                    .show()
+            }
+
+            bindingMF.subtitleBtn.setOnClickListener {
+                if(isSubtitle) {
+                    trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this).setRendererDisabled(
+                        C.TRACK_TYPE_VIDEO, true
+                    ).build()
+                    Toast.makeText(this, "Subtitles Off", Toast.LENGTH_SHORT).show()
+                    isSubtitle = false
+                } else {
+                    trackSelector.parameters = DefaultTrackSelector.ParametersBuilder(this).setRendererDisabled(
+                        C.TRACK_TYPE_VIDEO, false
+                    ).build()
+                    Toast.makeText(this, "Subtitles On", Toast.LENGTH_SHORT).show()
+                    isSubtitle = true
+
+                }
+                dialog.dismiss()
+                playVideo()
             }
         }
     }
@@ -167,9 +203,10 @@ class PlayerActivity : AppCompatActivity() {
         try {
             player.release()
         } catch (e: Exception) {}
+        trackSelector = DefaultTrackSelector(this)
         binding.videoTitle.text = playerList[position].title
         binding.videoTitle.isSelected = true
-        player = ExoPlayer.Builder(this).build()
+        player = ExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(playerList[position].artUri)
         player.setMediaItem(mediaItem)
@@ -184,6 +221,7 @@ class PlayerActivity : AppCompatActivity() {
         })
         playInFullscreen(isFullScreen)
         setVisibility()
+
     }
 
     private fun playVideo() {
