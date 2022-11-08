@@ -1,11 +1,14 @@
 package com.neon.videoer
 
-import android.opengl.Visibility
+
+
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 
 import android.view.WindowManager
@@ -17,10 +20,13 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 import com.neon.videoer.databinding.ActivityPlayerBinding
+import com.neon.videoer.databinding.MoreFeaturesBinding
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
@@ -41,6 +47,7 @@ class PlayerActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             window.attributes.layoutInDisplayCutoutMode =
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+
         }
         binding = ActivityPlayerBinding.inflate(layoutInflater)
 
@@ -48,10 +55,10 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         //For immersive Mode
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, binding.root).let{
-                controller ->
+        WindowInsetsControllerCompat(window, binding.root).let{ controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
 
         }
         initializeLayout()
@@ -125,6 +132,29 @@ class PlayerActivity : AppCompatActivity() {
                 binding.playerView.useController = true
                 binding.playerView.showController()
                 binding.lockBtn.setImageResource(R.drawable.lock_open_icon)
+            }
+        }
+
+        binding.moreFeaturesBtn.setOnClickListener {
+            pauseVideo()
+            val customDialog = LayoutInflater.from(this).inflate(R.layout.more_features, binding.root, false)
+            val bindingMF = MoreFeaturesBinding.bind(customDialog)
+            val dialog = MaterialAlertDialogBuilder(this).setView(customDialog)
+                .setOnCancelListener {
+                    playVideo()
+                }
+                .setBackground(ColorDrawable(0x00090809)).create()
+            dialog.show()
+
+            bindingMF.audioTrackBtn.setOnClickListener {
+                dialog.dismiss()
+                MaterialAlertDialogBuilder(this, R.style.alertDialog)
+                    .setTitle("Select Audio Track")
+                    .setOnCancelListener {
+                        playVideo()
+                    }
+                    .setBackground(ColorDrawable(0x00090809)).create().show()
+
             }
         }
     }

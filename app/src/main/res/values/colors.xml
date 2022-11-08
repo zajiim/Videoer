@@ -12,5 +12,6 @@
     <color name="accent_blue">#306fcf</color>
     <color name="red_color">#d50000</color>
     <color name="gray_color">#919191</color>
+    <color name="more_features_bg">#00090809</color>
 
 </resources>

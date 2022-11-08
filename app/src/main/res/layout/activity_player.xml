@@ -15,7 +15,8 @@
         android:keepScreenOn="true"
         app:controller_layout_id="@layout/custom_control_view"
         tools:layout_editor_absoluteX="-205dp"
-        tools:layout_editor_absoluteY="-60dp" />
+        tools:layout_editor_absoluteY="-60dp"
+        />
 
     <LinearLayout
         android:id="@+id/topController"
@@ -52,6 +53,7 @@
             android:ellipsize="marquee"/>
         
         <ImageView
+            android:id="@+id/moreFeaturesBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/menu_dots_icon"
@@ -108,19 +110,19 @@
 
             <ImageView
                 android:id="@+id/prevBtn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/previous_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/previous_icon"
                 app:tint="@color/white"
-
+                android:layout_marginRight="40dp"
                 android:padding="10dp"/>
 
             <ImageView
                 android:id="@+id/playPauseBtn"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/play_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/play_button"
@@ -134,12 +136,13 @@
 
             <ImageView
                 android:id="@+id/nextBtn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/next_icon"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/next_icon"
                 app:tint="@color/white"
+                android:layout_marginLeft="40dp"
                 android:padding="10dp"/>
 
         </LinearLayout>
