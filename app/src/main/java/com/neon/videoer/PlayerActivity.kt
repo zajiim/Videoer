@@ -1,5 +1,12 @@
 package com.neon.videoer
+import android.annotation.SuppressLint
+import android.app.AppOpsManager
+import android.app.PictureInPictureParams
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +17,7 @@ import android.view.View
 
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -45,6 +53,7 @@ class PlayerActivity : AppCompatActivity() {
         private var isLocked: Boolean = false
         private lateinit var trackSelector: DefaultTrackSelector
         private var speed: Float = 1.0f
+        var pipStatus: Int = 0
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -227,6 +236,22 @@ class PlayerActivity : AppCompatActivity() {
                     bindingPlaybackSpeed.playbackSpeedText.text = "${DecimalFormat("#.##").format(speed)} x"
                 }
             }
+
+            bindingMF.pipModeBtn.setOnClickListener {
+                val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+                val status = appOps.checkOpNoThrow(AppOpsManager.OPSTR_PICTURE_IN_PICTURE, android.os.Process.myUid(), packageName) == AppOpsManager.MODE_ALLOWED
+                if(status) {
+                    this.enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                    dialog.dismiss()
+                    binding.playerView.hideController()
+                    playVideo()
+                    pipStatus = 0
+                } else {
+                    val intent = Intent("android.settings.PICTURE_IN_PICTURE_SETTINGS", Uri.parse("package: $packageName"))
+                    startActivity(intent)
+                }
+
+            }
         }
     }
 
@@ -335,6 +360,19 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
         player.setPlaybackSpeed(speed)
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
+        if(pipStatus != 0) {
+            finish()
+            val intent = Intent(this, PlayerActivity::class.java)
+            when(pipStatus) {
+                1 -> intent.putExtra("class", "FolderActivity")
+                2 -> intent.putExtra("class", "AllVideos")
+            }
+            startActivity(intent)
+        }
     }
 
 
