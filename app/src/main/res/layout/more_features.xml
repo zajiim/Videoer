@@ -42,6 +42,7 @@
             app:iconTint="@color/white"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/audioEnhanceBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:icon="@drawable/audio_enhancer_icon"
@@ -63,6 +64,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/playbackSpeedBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:icon="@drawable/speed_icon"
@@ -77,22 +79,23 @@
             android:textColor="@color/white"
             app:iconTint="@color/white"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:icon="@drawable/sleep_timer_icon"
-            android:text="@string/sleep_timer"
-            app:iconGravity="top"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:textAllCaps="false"
-            android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/white"
-            app:iconTint="@color/white"/>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:icon="@drawable/sleep_timer_icon"-->
+<!--            android:text="@string/sleep_timer"-->
+<!--            app:iconGravity="top"-->
+<!--            android:background="?attr/selectableItemBackground"-->
+<!--            android:clickable="true"-->
+<!--            android:focusable="true"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:layout_weight="1"-->
+<!--            style="@style/Widget.AppCompat.Button.Borderless"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:iconTint="@color/white"/>-->
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/pipModeBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:icon="@drawable/pip_icon"

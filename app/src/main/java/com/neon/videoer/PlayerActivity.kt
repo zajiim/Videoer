@@ -26,6 +26,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.neon.videoer.databinding.ActivityPlayerBinding
 import com.neon.videoer.databinding.MoreFeaturesBinding
+import com.neon.videoer.databinding.PlaybackSpeedDialogBinding
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,7 +43,8 @@ class PlayerActivity : AppCompatActivity() {
         private var repeat: Boolean = false
         private var isFullScreen: Boolean = false
         private var isLocked: Boolean = false
-        lateinit var trackSelector: DefaultTrackSelector
+        private lateinit var trackSelector: DefaultTrackSelector
+        private var speed: Float = 1.0f
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,6 +161,8 @@ class PlayerActivity : AppCompatActivity() {
                         audioTrack.add(Locale(player.currentTrackGroups.get(i).getFormat(0).language.toString()).displayLanguage)
                     }
                 }
+
+
                 val tempTracks = audioTrack.toArray(arrayOfNulls<CharSequence>(audioTrack.size))
                 MaterialAlertDialogBuilder(this, R.style.alertDialog)
                     .setTitle("Select Audio Track")
@@ -192,6 +197,36 @@ class PlayerActivity : AppCompatActivity() {
                 dialog.dismiss()
                 playVideo()
             }
+            bindingMF.audioEnhanceBtn.setOnClickListener {
+
+                Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
+            bindingMF.playbackSpeedBtn.setOnClickListener {
+                dialog.dismiss()
+                playVideo()
+                val customDialogPlaybackSpeed = LayoutInflater.from(this).inflate(R.layout.playback_speed_dialog, binding.root, false)
+                val bindingPlaybackSpeed = PlaybackSpeedDialogBinding.bind((customDialogPlaybackSpeed))
+                val dialogPlaybackSpeed = MaterialAlertDialogBuilder(this).setView(customDialogPlaybackSpeed)
+                    .setCancelable(false)
+                    .setPositiveButton("OK") {self, _ ->
+                        self.dismiss()
+
+                    }
+                    .setBackground(ColorDrawable(0x00090809))
+                    .create()
+                dialogPlaybackSpeed.show()
+                bindingPlaybackSpeed.playbackSpeedText.text = "${DecimalFormat("#.##").format(speed)} x"
+                bindingPlaybackSpeed.playbackMinusBtn.setOnClickListener {
+                    changeSpeed(isIncrement = false)
+                    bindingPlaybackSpeed.playbackSpeedText.text = "${DecimalFormat("#.##").format(speed)} x"
+                }
+                bindingPlaybackSpeed.playbackPlusBtn.setOnClickListener {
+                    changeSpeed(isIncrement = true)
+                    bindingPlaybackSpeed.playbackSpeedText.text = "${DecimalFormat("#.##").format(speed)} x"
+                }
+            }
         }
     }
 
@@ -204,6 +239,7 @@ class PlayerActivity : AppCompatActivity() {
             player.release()
         } catch (e: Exception) {}
         trackSelector = DefaultTrackSelector(this)
+        speed = 1.0f
         binding.videoTitle.text = playerList[position].title
         binding.videoTitle.isSelected = true
         player = ExoPlayer.Builder(this).setTrackSelector(trackSelector).build()
@@ -286,6 +322,19 @@ class PlayerActivity : AppCompatActivity() {
         if(isLocked) binding.lockBtn.visibility = View.VISIBLE
         else binding.lockBtn.visibility = visibility
 
+    }
+
+    private fun changeSpeed(isIncrement: Boolean) {
+        if(isIncrement) {
+            if(speed <= 2.9f) {
+                speed += 0.10f
+            }
+        } else {
+            if(speed > 0.20f) {
+                speed -= 0.10f
+            }
+        }
+        player.setPlaybackSpeed(speed)
     }
 
 
