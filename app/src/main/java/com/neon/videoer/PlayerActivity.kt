@@ -1,10 +1,10 @@
 package com.neon.videoer
+
 import android.annotation.SuppressLint
 import android.app.AppOpsManager
 import android.app.PictureInPictureParams
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -14,24 +14,18 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.exoplayer2.C
-
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
-
 import com.neon.videoer.databinding.ActivityPlayerBinding
 import com.neon.videoer.databinding.MoreFeaturesBinding
 import com.neon.videoer.databinding.PlaybackSpeedDialogBinding
@@ -43,7 +37,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var runnable: Runnable
     private var isSubtitle: Boolean = true
-
+    private lateinit var trackSelector: DefaultTrackSelector
     companion object {
         lateinit var player: ExoPlayer
         lateinit var playerList: ArrayList<com.neon.videoer.models.Video>
@@ -51,7 +45,7 @@ class PlayerActivity : AppCompatActivity() {
         private var repeat: Boolean = false
         private var isFullScreen: Boolean = false
         private var isLocked: Boolean = false
-        private lateinit var trackSelector: DefaultTrackSelector
+
         private var speed: Float = 1.0f
         var pipStatus: Int = 0
     }
@@ -78,6 +72,25 @@ class PlayerActivity : AppCompatActivity() {
         }
         initializeLayout()
         initializeBinding()
+        binding.backwardFL.setOnClickListener ( DoubleClickListener(callback = object :DoubleClickListener.Callback{
+            override fun doubleClicked() {
+                binding.playerView.showController()
+                binding.backwardBtn.visibility = View.VISIBLE
+                player.seekTo(player.currentPosition - 5000)
+
+            }
+
+        }))
+
+        binding.forwardFL.setOnClickListener ( DoubleClickListener(callback = object :DoubleClickListener.Callback{
+            override fun doubleClicked() {
+                binding.playerView.showController()
+                binding.forwardBtn.visibility = View.VISIBLE
+                player.seekTo(player.currentPosition + 5000)
+
+            }
+
+        }))
     }
 
     private fun initializeLayout() {
@@ -250,7 +263,6 @@ class PlayerActivity : AppCompatActivity() {
                     val intent = Intent("android.settings.PICTURE_IN_PICTURE_SETTINGS", Uri.parse("package: $packageName"))
                     startActivity(intent)
                 }
-
             }
         }
     }
@@ -346,6 +358,8 @@ class PlayerActivity : AppCompatActivity() {
         binding.bottomController.visibility = visibility
         if(isLocked) binding.lockBtn.visibility = View.VISIBLE
         else binding.lockBtn.visibility = visibility
+        binding.backwardBtn.visibility = View.GONE
+        binding.forwardBtn.visibility = View.GONE
 
     }
 
@@ -361,6 +375,7 @@ class PlayerActivity : AppCompatActivity() {
         }
         player.setPlaybackSpeed(speed)
     }
+
 
     @SuppressLint("MissingSuperCall")
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
