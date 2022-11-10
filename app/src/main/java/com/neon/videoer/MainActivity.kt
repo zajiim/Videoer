@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+    //Get All Available Videos from Storage
     @SuppressLint("Range")
     private fun getAllVideos(): ArrayList<Video>{
         val tempList = ArrayList<Video>()

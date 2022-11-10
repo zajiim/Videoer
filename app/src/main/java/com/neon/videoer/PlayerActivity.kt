@@ -38,6 +38,8 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var runnable: Runnable
     private var isSubtitle: Boolean = true
     private lateinit var trackSelector: DefaultTrackSelector
+    private var moreTime: Int = 0
+
     companion object {
         lateinit var player: ExoPlayer
         lateinit var playerList: ArrayList<com.neon.videoer.models.Video>
@@ -72,21 +74,24 @@ class PlayerActivity : AppCompatActivity() {
         }
         initializeLayout()
         initializeBinding()
+        //skipping 5 sec backwards by double tapping
         binding.backwardFL.setOnClickListener ( DoubleClickListener(callback = object :DoubleClickListener.Callback{
             override fun doubleClicked() {
                 binding.playerView.showController()
                 binding.backwardBtn.visibility = View.VISIBLE
                 player.seekTo(player.currentPosition - 5000)
+                moreTime = 0
 
             }
 
         }))
-
+        //skipping 5 sec forwards by double tapping
         binding.forwardFL.setOnClickListener ( DoubleClickListener(callback = object :DoubleClickListener.Callback{
             override fun doubleClicked() {
                 binding.playerView.showController()
                 binding.forwardBtn.visibility = View.VISIBLE
                 player.seekTo(player.currentPosition + 5000)
+                moreTime = 0
 
             }
 
@@ -127,6 +132,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.prevBtn.setOnClickListener {
             nextPrevVideo(isNext = false)
         }
+        //toggle repeat button
         binding.repeatBtn.setOnClickListener {
             if (repeat) {
                 repeat = false
@@ -138,7 +144,7 @@ class PlayerActivity : AppCompatActivity() {
                 binding.repeatBtn.setImageResource(com.google.android.exoplayer2.ui.R.drawable.exo_controls_repeat_all)
             }
         }
-
+        //fullscreen mode
         binding.fullScreenBtn.setOnClickListener {
             if(isFullScreen) {
                 isFullScreen = false
@@ -148,7 +154,7 @@ class PlayerActivity : AppCompatActivity() {
                 playInFullscreen(true)
             }
         }
-
+        //Lock button function
         binding.lockBtn.setOnClickListener {
             if(!isLocked) {
                 isLocked = true
@@ -162,7 +168,7 @@ class PlayerActivity : AppCompatActivity() {
                 binding.lockBtn.setImageResource(R.drawable.lock_open_icon)
             }
         }
-
+        //more features section
         binding.moreFeaturesBtn.setOnClickListener {
             pauseVideo()
             val customDialog = LayoutInflater.from(this).inflate(R.layout.more_features, binding.root, false)
@@ -312,7 +318,7 @@ class PlayerActivity : AppCompatActivity() {
         createPlayer()
 
     }
-
+    //next video logics
     private fun setPosition(isIncrement: Boolean = true) {
         if(!repeat) {
             if(isIncrement) {
@@ -358,8 +364,13 @@ class PlayerActivity : AppCompatActivity() {
         binding.bottomController.visibility = visibility
         if(isLocked) binding.lockBtn.visibility = View.VISIBLE
         else binding.lockBtn.visibility = visibility
-        binding.backwardBtn.visibility = View.GONE
-        binding.forwardBtn.visibility = View.GONE
+        if(moreTime == 2) {
+            binding.backwardBtn.visibility = View.GONE
+            binding.forwardBtn.visibility = View.GONE
+        } else ++moreTime
+        binding.backwardFL.visibility = visibility
+        binding.forwardFL.visibility = visibility
+
 
     }
 
@@ -376,7 +387,7 @@ class PlayerActivity : AppCompatActivity() {
         player.setPlaybackSpeed(speed)
     }
 
-
+    //PIP functionality
     @SuppressLint("MissingSuperCall")
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         if(pipStatus != 0) {

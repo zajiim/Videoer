@@ -19,9 +19,7 @@ class FoldersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_folders, container, false)
-
         val binding = FragmentFoldersBinding.bind(view)
         binding.folderRV.setHasFixedSize(true)
         binding.folderRV.setItemViewCacheSize(10)
