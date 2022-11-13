@@ -5,9 +5,12 @@ import android.app.AppOpsManager
 import android.app.PictureInPictureParams
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
+//import android.os.Build.VERSION_CODES.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -32,6 +35,8 @@ import com.neon.videoer.databinding.PlaybackSpeedDialogBinding
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
+
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
@@ -118,6 +123,13 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun initializeBinding() {
+
+        binding.changeOrientationBtn.setOnClickListener {
+            requestedOrientation = if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            else
+                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        }
 
         binding.backBtn.setOnClickListener {
             finish()
@@ -276,7 +288,6 @@ class PlayerActivity : AppCompatActivity() {
 
 
 
-
     private fun createPlayer() {
         try {
             player.release()
@@ -298,6 +309,9 @@ class PlayerActivity : AppCompatActivity() {
                 if(playbackState == Player.STATE_ENDED) nextPrevVideo()
             }
         })
+
+//        binding.changeOrientationBtn.visibility = View.GONE
+
         playInFullscreen(isFullScreen)
         setVisibility()
 

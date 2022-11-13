@@ -153,10 +153,20 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/repeatBtn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:id="@+id/changeOrientationBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="70dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/change_orientation"
+            android:src="@drawable/change_orientation_icon"
+
+            app:tint="@color/white" />
+        <ImageView
+            android:id="@+id/repeatBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/repeat_icon"
             android:src="@drawable/repeat_icon"
@@ -167,6 +177,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="center">
 
             <ImageView
@@ -174,7 +186,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="20dp"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/previous_icon"
                 android:padding="10dp"
@@ -200,7 +212,7 @@
                 android:id="@+id/nextBtn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="15dp"
                 android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/next_icon"
@@ -212,8 +224,8 @@
 
         <ImageView
             android:id="@+id/fullScreenBtn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginRight="70dp"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/fullscreen_icon"

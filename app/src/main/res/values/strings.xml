@@ -32,6 +32,7 @@
     <string name="speed">Speed</string>
     <string name="sleep_timer">Sleep Timer</string>
     <string name="pip_mode">PIP</string>
+    <string name="change_orientation">Change Orientation</string>
 
 
 </resources>
