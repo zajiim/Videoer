@@ -2,9 +2,9 @@ package com.neon.videoer
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
-import android.content.ContentResolver
+
 import android.content.pm.PackageManager
-import android.database.Cursor
+
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
